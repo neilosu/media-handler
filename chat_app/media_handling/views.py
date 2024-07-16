@@ -6,7 +6,7 @@ from .serializers import ImageUploadSerializer
 
 class ImageUploadView(APIView):
     def post(self, request, *args, **kwargs):
-        serializer = ImageUploadSerializer(data=request.data)
+        serializer = ImageUploadSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
