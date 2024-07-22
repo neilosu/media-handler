@@ -19,4 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('media/', include('media_handling.urls')),
+    path('', include('frontend.urls')),
 ]

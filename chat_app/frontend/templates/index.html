@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat App</title>
+    <!-- Dropzone.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css">
+    <!-- Dropzone.js Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
+    <style>
+        .dropzone {
+            border: 2px dashed #0087F7;
+            border-radius: 5px;
+            background: white;
+            padding: 50px;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
+            font-size: 18px;
+            color: #555;
+        }
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .dz-button {
+            padding: 10px 20px;
+            background-color: #0087F7;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Chat App!</h1>
+
+    <div class="container">
+        <!-- Dropzone form -->
+        <form action="/media/upload/" class="dropzone" id="my-dropzone">
+            <div class="dz-message" data-dz-message><span>Drag and drop files here or click to upload</span></div>
+        </form>
+    
+        <!-- Confirm button -->
+        <button class="dz-button" id="upload-confirm">Confirm Upload</button>
+    </div>
+
+    <script>
+        // Configure Dropzone
+        Dropzone.options.myDropzone = {
+            paramName: "image", // The name that will be used to transfer the file
+            maxFilesize: 2, // MB
+            acceptedFiles: "image/*",
+            autoProcessQueue: false, // Disable auto upload
+            init: function() {
+                var myDropzone = this;
+
+                // Event listener for the confirm button
+                document.getElementById("upload-confirm").addEventListener("click", function() {
+                    myDropzone.processQueue(); // Manually process the queue
+                });
+
+                this.on("success", function(file, response) {
+                    console.log("File successfully uploaded:", response);
+                });
+
+                this.on("error", function(file, response) {
+                    console.log("File upload error:", response);
+                });
+            }
+        };
+    </script>
+</body>
+</html>
