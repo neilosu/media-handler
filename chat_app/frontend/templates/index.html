@@ -32,6 +32,29 @@
             border-radius: 5px;
             display: inline-block;
         }
+        .thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .thumbnail {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            cursor: pointer;
+            object-fit: cover;
+        }
+        .full-size {
+            display: none;
+            width: 100%;
+            height: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
     </style>
 </head>
 <body>
@@ -46,6 +69,10 @@
         <!-- Confirm button -->
         <button class="dz-button" id="upload-confirm">Confirm Upload</button>
     </div>
+
+    <div class="thumbnails" id="thumbnail-container"></div>
+
+    <img id="full-size-image" class="full-size" onclick="closeImage()">
 
     <script>
         // Configure Dropzone
@@ -63,7 +90,12 @@
                 });
 
                 this.on("success", function(file, response) {
-                    console.log("File successfully uploaded:", response);
+                    console.log("Server response:", response); // Log the entire response
+                    if(response && response.image_name) {
+                        addThumbnail(response.image_name);
+                    } else {
+                        console.error("Invalid response format. Expected 'image_name' property.");
+                    }
                 });
 
                 this.on("error", function(file, response) {
@@ -71,6 +103,26 @@
                 });
             }
         };
+
+        function addThumbnail(imageName) {
+            const container = document.getElementById('thumbnail-container');
+            const img = document.createElement('img');
+            img.src = `/media/thumbnail/${imageName}`;
+            img.classList.add('thumbnail');
+            img.onclick = () => expandImage(`/media/image/${imageName}`);
+            container.appendChild(img);
+        }
+
+        function expandImage(url) {
+            const fullSizeImage = document.getElementById('full-size-image');
+            fullSizeImage.src = url;
+            fullSizeImage.style.display = 'block';
+        }
+
+        function closeImage() {
+            const fullSizeImage = document.getElementById('full-size-image');
+            fullSizeImage.style.display = 'none';
+        }
     </script>
 </body>
 </html>
