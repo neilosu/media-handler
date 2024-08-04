@@ -18,3 +18,6 @@ curl --location 'http://127.0.0.1:8000/media/image/test.png'
 ```
 curl --location 'http://127.0.0.1:8000/media/thumbnail/test.png'
 ```
+
+## Notes
+You can click on the thumbnail image after you upload the image to view the original image.
